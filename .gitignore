@@ -1,0 +1,13 @@
+# IntelliJ
+.idea/
+*.iml
+out/
+
+# Maven
+target/.
+
+# Macbook
+DS_Store
+
+# Log files
+*.log
