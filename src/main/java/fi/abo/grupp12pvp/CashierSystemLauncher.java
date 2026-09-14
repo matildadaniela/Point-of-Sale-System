@@ -4,9 +4,8 @@ import javafx.application.Application;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Grupp12PvpApplication {
-
+public class CashierSystemLauncher {
     public static void main(String[] args) {
-        Application.launch(JavaFxApplication.class, args);
+        Application.launch(CashierSystemApplication.class, args);
     }
 }
