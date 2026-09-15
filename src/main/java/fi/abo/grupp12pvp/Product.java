@@ -25,7 +25,7 @@ public class Product {
     }
 
     //Display product
-    public void displayProduct() {
-        System.out.println("Barcode: " + barcode + ", Name: " + name + ", Price: " + price + "€");
+    public String displayProduct() {
+        return name + " - " + String.format("%.2f €", price) + " - " + barcode;
     }
 }
