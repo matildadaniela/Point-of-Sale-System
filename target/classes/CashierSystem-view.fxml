@@ -10,8 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<!-- Scene builder code that connects to CashierSystemController -->
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.abo.grupp12pvp.CashierSystemController">
    <children>
       <VBox fx:id="customerView" prefHeight="800.0" prefWidth="600.0">
          <HBox.margin>
@@ -28,16 +29,16 @@
                      </font>
                   </Label>
                   <Separator prefHeight="29.0" prefWidth="39.0" />
-                <Button mnemonicParsing="false" text="Shopping cart" />
-                  <Button mnemonicParsing="false" text="Catalogue" />
-                  <Button mnemonicParsing="false" text="Check out" />
+                <Button mnemonicParsing="false" onAction="#showCartPage" text="Shopping cart" />
+                  <Button mnemonicParsing="false" onAction="#showCataloguePage" text="Catalogue" />
+                  <Button mnemonicParsing="false" onAction="#showCheckOutPage" text="Check out" />
               </items>
             </ToolBar>
             <StackPane prefHeight="760.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox prefHeight="760.0" prefWidth="600.0" />
-                  <VBox prefHeight="760.0" prefWidth="600.0" />
-                  <VBox prefHeight="760.0" prefWidth="600.0" />
+                  <VBox fx:id="cartPage" prefHeight="760.0" prefWidth="600.0" />
+                  <VBox fx:id="cataloguePage" prefHeight="760.0" prefWidth="600.0" />
+                  <VBox fx:id="checkOutPage" prefHeight="760.0" prefWidth="600.0" />
                </children>
             </StackPane>
          </children>

@@ -14,6 +14,7 @@ public class CashierSystemApplication extends Application {
 
     private ConfigurableApplicationContext applicationContext;
 
+    //Start spring boot
     @Override
     public void init() {
         applicationContext = SpringApplication.run(
@@ -22,6 +23,7 @@ public class CashierSystemApplication extends Application {
         );
     }
 
+    //Open javafx
     @Override
     public void start(Stage stage) throws IOException {
 
@@ -34,6 +36,7 @@ public class CashierSystemApplication extends Application {
         stage.show();
     }
 
+    //Quits spring boot and javafx
     @Override
     public void stop() {
         applicationContext.close();
