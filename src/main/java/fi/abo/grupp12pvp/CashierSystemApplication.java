@@ -27,6 +27,8 @@ public class CashierSystemApplication extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(CashierSystemApplication.class.getResource("/CashierSystem-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
+        scene.getStylesheets().add(
+                getClass().getResource("/style.css").toExternalForm());
         stage.setTitle("Cashier System");
         stage.setScene(scene);
         stage.show();

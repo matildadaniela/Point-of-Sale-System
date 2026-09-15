@@ -3,7 +3,7 @@ package fi.abo.grupp12pvp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class CashierSystemController {
+public class MainController {
 
     @FXML
     private Label welcomeText;
