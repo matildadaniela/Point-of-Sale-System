@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.abo.grupp12pvp.CashierSystemController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button layoutX="245.0" layoutY="175.0" mnemonicParsing="false" onAction="#onHelloButtonClick" text="Cashier" />
-      <Label fx:id="welcomeText" layoutX="260.0" layoutY="121.0" text="Label" />
+      <VBox fx:id="customerView" prefHeight="400.0" prefWidth="300.0">
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+      </VBox>
+      <VBox fx:id="cashierView" prefHeight="400.0" prefWidth="300.0" />
    </children>
-</AnchorPane>
+</HBox>
