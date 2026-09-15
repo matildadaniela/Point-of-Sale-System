@@ -14,6 +14,7 @@ import java.util.Map;
 
 public class PosController {
     private final Sale sale = new Sale();
+    private CustomerController customerController;
 
     @FXML
     private TextField scanField;
@@ -34,6 +35,10 @@ public class PosController {
             "456789", new Product("456789", "Cheese", new BigDecimal("3.00")),
             "567890", new Product("567890", "Butter", new BigDecimal("3.20"))
     );
+
+    public void setCustomerController(CustomerController customerController) {
+        this.customerController = customerController;
+    }
 
     @FXML
     private void initialize() {
@@ -63,6 +68,10 @@ public class PosController {
         sale.addItem(product);
         itemListView.getItems().add(product.name() + " - €" + product.price());
         totalLabel.setText("Total: €" + sale.getTotal().toPlainString());
+
+        if (customerController != null) {
+            customerController.refresh(sale);
+        }
 
         scanField.clear();
         scanField.requestFocus();
