@@ -3,6 +3,7 @@ package fi.abo.grupp12pvp.payment;
 import fi.abo.grupp12pvp.model.CardPaymentResult;
 import java.math.BigDecimal;
 
+//Hanterar en "kortbetalning" som godkänns om summan är större än 0.
 public class CardPayment {
 
     public CardPaymentResult pay(BigDecimal amount) {
