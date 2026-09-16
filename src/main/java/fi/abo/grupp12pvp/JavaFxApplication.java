@@ -32,6 +32,7 @@ public class JavaFxApplication extends Application {
             Parent posRoot = posLoader.load();
             PosController posController = posLoader.getController();
             posController.setCustomerController(customerController);
+            customerController.setSale(posController.getSale());
 
             stage.setTitle("Cash Register");
             stage.setScene(new Scene(posRoot, 500, 500));

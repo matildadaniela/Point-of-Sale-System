@@ -3,7 +3,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextField?>
 
+<?import javafx.scene.control.Button?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="fi.abo.grupp12pvp.controller.CustomerController"
@@ -13,5 +15,13 @@
     <Label text="Your Items" styleClass="title"/>
     <ListView fx:id="customerItemListView"/>
     <Label fx:id="customerTotalLabel" styleClass="total-label" text="Total: €0.00"/>
+
+    <Label text="Card Payment"/>
+    <TextField fx:id="cardAmountField"
+               promptText="Amount"/>
+    <Button fx:id="cardPaymentButton"
+            text="Pay by card"/>
+    <Label fx:id="cardPaymentStatusLabel"/>
+    <Label fx:id="cardPaidLabel" text="Paid by card: 0.00€"/>
 
 </VBox>

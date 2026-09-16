@@ -4,10 +4,10 @@
 out/
 
 # Maven
-target/.
+target/
 
 # Macbook
-DS_Store
+.DS_Store
 
 # Log files
 *.log

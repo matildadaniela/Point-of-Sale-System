@@ -28,6 +28,7 @@ public class PosController {
     @FXML
     private Label totalLabel;
 
+
     private final Map<String, Product> catalog = Map.of(
             "123456", new Product("123456", "Bread", new BigDecimal("1.50")),
             "234567", new Product("234567", "Milk", new BigDecimal("2.00")),
@@ -75,5 +76,9 @@ public class PosController {
 
         scanField.clear();
         scanField.requestFocus();
+    }
+
+    public Sale getSale() {
+        return sale;
     }
 }

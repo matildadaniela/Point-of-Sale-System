@@ -10,6 +10,9 @@ import java.util.Map;
 public class Sale {
     private final List<Product> items = new ArrayList<>();
 
+    //Kortbetalningen sammanlagt
+    private BigDecimal cardPaid = BigDecimal.ZERO;
+
     public void addItem(Product product) {
         items.add(product);
     }
@@ -31,5 +34,15 @@ public class Sale {
             grouped.merge(product, 1, Integer::sum);
         }
         return grouped;
+    }
+
+    //Om betalningen godkänns läggs den till i systemet
+    public void addCardPayment(BigDecimal amount) {
+        cardPaid = cardPaid.add(amount);
+    }
+
+    //Getter
+    public BigDecimal getCardPaid() {
+        return cardPaid;
     }
 }
