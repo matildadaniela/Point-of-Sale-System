@@ -34,7 +34,7 @@ public class JavaFxApplication extends Application {
             posController.setCustomerController(customerController);
 
             stage.setTitle("Cash Register");
-            stage.setScene(new Scene(posRoot, 500, 500));
+            stage.setScene(new Scene(posRoot, 500, 650));
             stage.show();
 
         } catch (IOException e) {
