@@ -3,6 +3,7 @@ package fi.abo.grupp12pvp;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 
 public class CashierSystemController {
 
@@ -16,9 +17,24 @@ public class CashierSystemController {
     private VBox cataloguePage;
     @FXML
     private VBox checkOutPage;
+    @FXML
+    private TextField barcodeField;
+
     private final ShoppingCart shoppingCart = new ShoppingCart();
     private final ProductCatalogue catalogue = new ProductCatalogue();
 
+    @FXML
+    private void addProductByBarcode() {
+
+        String barcode = barcodeField.getText();
+        Product product = catalogue.findProduct(barcode);
+
+        if (product != null) {
+            shoppingCart.addProduct(product);
+            displayShoppingCart();
+            barcodeField.clear();
+        }
+    }
     //Displays the shopping cart
     private void displayShoppingCart() {
         cartList.getItems().clear();
@@ -46,6 +62,7 @@ public class CashierSystemController {
         pageToShow.setVisible(true);
     }
 
+    //Initializer
     @FXML
     public void initialize() {
         displayCatalogue();

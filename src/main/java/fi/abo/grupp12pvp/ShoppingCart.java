@@ -20,4 +20,5 @@ public class ShoppingCart {
     public ArrayList<Product> getProducts() {
         return products;
     }
+
 }

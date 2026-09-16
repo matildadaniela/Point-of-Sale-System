@@ -23,4 +23,14 @@ public class ProductCatalogue {
         return products;
     }
 
+    //Finding products with the help of a barcode
+    public Product findProduct(String barcode) {
+        for (Product product : products) {
+            if (product.getBarcode().equals(barcode)) {
+                return product;
+            }
+        }
+        return null;
+       
+    }
 }
