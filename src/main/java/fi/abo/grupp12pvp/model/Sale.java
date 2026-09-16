@@ -13,6 +13,13 @@ public class Sale {
     //Kortbetalningen sammanlagt
     private BigDecimal cardPaid = BigDecimal.ZERO;
 
+    //Kontantbetalningen sammanlagt
+    private BigDecimal cashPaid = BigDecimal.ZERO;
+
+    public BigDecimal getTotalPaid() {
+        return cardPaid.add(cashPaid);
+    }
+
     public void addItem(Product product) {
         items.add(product);
     }
@@ -44,5 +51,31 @@ public class Sale {
     //Getter
     public BigDecimal getCardPaid() {
         return cardPaid;
+    }
+
+    //Om betalningen för kontant godkänns läggs den till i systemet
+    public void addCashPayment(BigDecimal amount) {
+        cashPaid = cashPaid.add(amount);
+    }
+
+    //Getter
+    public BigDecimal getCashPaid() {
+        return cashPaid;
+    }
+
+    //Räknar ut hur mycket som ännu ska betalas
+    public BigDecimal getRemainingTotal() {
+        BigDecimal remaining = getTotal().subtract(getTotalPaid());
+        return remaining.compareTo(BigDecimal.ZERO) < 0 ? BigDecimal.ZERO : remaining;
+    }
+
+    //Räknar ut hur mycket växel kunden ska få om hen betalat kontant
+    public BigDecimal getChange() {
+        BigDecimal overpaid = getTotalPaid().subtract(getTotal());
+        return overpaid.compareTo(BigDecimal.ZERO) > 0 ? overpaid : BigDecimal.ZERO;
+    }
+
+    public boolean isFullyPaid() {
+        return getTotalPaid().compareTo(getTotal()) >= 0 && getTotal().compareTo(BigDecimal.ZERO) > 0 ;
     }
 }

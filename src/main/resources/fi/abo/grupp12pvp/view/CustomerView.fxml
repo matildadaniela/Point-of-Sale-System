@@ -4,24 +4,49 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TextField?>
-
 <?import javafx.scene.control.Button?>
+
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="fi.abo.grupp12pvp.controller.CustomerController"
       stylesheets="@styles.css"
       spacing="10" style="-fx-padding: 20;">
 
+    <!--Produkter och totalsumma syns alltid-->
     <Label text="Your Items" styleClass="title"/>
     <ListView fx:id="customerItemListView"/>
     <Label fx:id="customerTotalLabel" styleClass="total-label" text="Total: €0.00"/>
 
-    <Label text="Card Payment"/>
-    <TextField fx:id="cardAmountField"
-               promptText="Amount"/>
-    <Button fx:id="cardPaymentButton"
-            text="Pay by card"/>
-    <Label fx:id="cardPaymentStatusLabel"/>
-    <Label fx:id="cardPaidLabel" text="Paid by card: 0.00€"/>
+    <!--Remaining sum to pay-->
+    <Label fx:id="remainingLabel" text="Remaining sum to pay: 0.00" style="-fx-font-weight: bold; -fx-text-fill: #333333"/>
+
+    <!--Payment options panel-->
+    <VBox fx:id="paymentOptionsPane" spacing="10">
+
+        <!--Card-->
+        <Label text="Card Payment"/>
+        <TextField fx:id="cardAmountField"
+                   promptText="Amount"/>
+        <Button fx:id="cardPaymentButton"
+                text="Pay by card"/>
+        <Label fx:id="cardPaymentStatusLabel"/>
+        <Label fx:id="cardPaidLabel" text="Paid by card: 0.00€"/>
+
+        <!--Cash-->
+        <Label text="Cash Payment"/>
+        <TextField fx:id="cashAmountField" promptText="Amount"/>
+        <Button fx:id="cashPaymentButton" text="Pay by cash"/>
+        <Label fx:id="cashPaymentStatusLabel"/>
+        <Label fx:id="cashPaidLabel" text="Paid by cash: 0.00"/>
+
+    </VBox>
+
+    <!-- Approved Panel & Change -->
+    <VBox fx:id="approvedPane" spacing="15" alignment="CENTER" visible="false" managed="false">
+        <Label text="Purchase approved!" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: green;"/>
+        <Label fx:id="changeLabel" text="Change: 0.00" style="-fx-font-weight: bold;"/>
+        <Button text="Next Customer" onAction="#handleApprove"/>
+    </VBox>
+
 
 </VBox>
