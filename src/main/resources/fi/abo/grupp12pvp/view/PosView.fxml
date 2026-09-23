@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.layout.FlowPane?>
 <VBox spacing="10.0"
       prefWidth="500.0"
       prefHeight="500.0"
@@ -22,7 +23,9 @@
         <Label text="Point of Sale System" styleClass="title"/>
         <TextField fx:id="scanField" promptText="Scan barcode" maxWidth="350.0"/>
         <Button fx:id="scanButton" text="Scan item" defaultButton="true"/>
-        <Label text="Scanned items" styleClass="items-label"/>
+        <Label text="Product Catalogue - Add items by clicking on the products" styleClass="items-label"/>
+        <FlowPane fx:id="productCataloguePane" hgap="10" vgap="10"/>
+        <Label text="Shopping cart" styleClass="items-label"/>
         <ListView fx:id="itemListView" prefHeight="250.0"/>
         <Label fx:id="totalLabel" text="Total: €0.00" styleClass="total-label"/>
     </children>

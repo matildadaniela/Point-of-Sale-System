@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -28,6 +29,8 @@ public class PosController {
     @FXML
     private Label totalLabel;
 
+    @FXML
+    private FlowPane productCataloguePane;
 
     private final Map<String, Product> catalog = Map.of(
             "123456", new Product("123456", "Bread", new BigDecimal("1.50")),
@@ -44,6 +47,7 @@ public class PosController {
     @FXML
     private void initialize() {
         scanButton.setOnAction(e -> handleScan());
+        createProductCatalogue();
     }
 
     private void handleScan() {
@@ -66,13 +70,7 @@ public class PosController {
             return;
         }
 
-        sale.addItem(product);
-        itemListView.getItems().add(product.name() + " - €" + product.price());
-        totalLabel.setText("Total: €" + sale.getTotal().toPlainString());
-
-        if (customerController != null) {
-            customerController.refresh(sale);
-        }
+        addProductToSale(product);
 
         scanField.clear();
         scanField.requestFocus();
@@ -80,5 +78,32 @@ public class PosController {
 
     public Sale getSale() {
         return sale;
+    }
+
+    //Gör produkterna synliga för kassören
+    //Anropar addProductToSale då kassören klickar på en produkt i katalogen
+    private void createProductCatalogue() {
+        for (Product product : catalog.values()) {
+
+            Button button = new Button(
+                    product.name() + "\n€" + product.price()
+            );
+            button.setPrefSize(70, 40);
+            button.setOnAction(e -> addProductToSale(product));
+            productCataloguePane.getChildren().add(button);
+        }
+    }
+
+    //Lägger till en produkt till produktkorgen både då en produkt "scannas" och då en produkt väljs från produktkatalogen
+    private void addProductToSale(Product product) {
+        sale.addItem(product);
+
+        itemListView.getItems().add(
+                product.name() + " - €" + product.price()
+        );
+        totalLabel.setText("Total: €" + sale.getTotal().toPlainString());
+        if (customerController != null) {
+            customerController.refresh(sale);
+        }
     }
 }
