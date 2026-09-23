@@ -29,5 +29,8 @@
         <Label text="Shopping cart" styleClass="items-label"/>
         <ListView fx:id="itemListView" prefHeight="250.0"/>
         <Label fx:id="totalLabel" text="Total: €0.00" styleClass="total-label"/>
+        <Label fx:id="cardStatusLabel" text="" style="-fx-font-weight: bold; -fx-text-fill: #333333;"/>
+        <Label fx:id="cashChangeLabel" text="" style="-fx-font-weight: bold; -fx-text-fill: #333333;"/>
+        <Label fx:id="overallStatusLabel" text="" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: green;"/>
     </children>
 </VBox>

@@ -1,5 +1,7 @@
 package fi.abo.grupp12pvp.controller;
 
+import fi.abo.grupp12pvp.model.CardPaymentResult;
+import fi.abo.grupp12pvp.model.CashPaymentResult;
 import fi.abo.grupp12pvp.model.Product;
 import fi.abo.grupp12pvp.model.Sale;
 import javafx.fxml.FXML;
@@ -11,7 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import java.util.List;
 import java.util.ArrayList;
-
+import java.util.stream.Collectors;
 import java.math.BigDecimal;
 import java.util.Map;
 
@@ -38,6 +40,16 @@ public class PosController {
 
     @FXML
     private FlowPane productCataloguePane;
+
+    @FXML
+    private Label cardStatusLabel;
+
+    @FXML
+    private Label cashChangeLabel;
+
+    @FXML
+    private Label overallStatusLabel;
+
 
     private final Map<String, Product> catalog = Map.of(
             "123456", new Product("123456", "Bread", new BigDecimal("1.50")),
@@ -151,6 +163,73 @@ public class PosController {
         if (customerController != null) {
             customerController.refresh(sale);
         }
+    }
+
+    //Sparar betalningshistorik
+
+    private final List<BigDecimal> cardPaymentHistory = new ArrayList<>();
+    private final List<BigDecimal> cashPaymentHistory = new ArrayList<>();
+
+    //POS payment status
+    private void checkOverallStatus() {
+        if (sale != null && sale.isFullyPaid()) {
+            if (overallStatusLabel != null) {
+                overallStatusLabel.setText("PAYMENT COMPLETE");
+                overallStatusLabel.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16px");
+            }
+        }
+    }
+
+    //Uppdaterar resultatet av en korttransaktion
+
+    public void updateCardTransactionResult(CardPaymentResult result, BigDecimal amount) {
+        if (cardStatusLabel != null) {
+            if (result.approved()) {
+                cardPaymentHistory.add(amount);
+                String historyText = cardPaymentHistory.stream()
+                        .map(a -> "€" + a.toPlainString())
+                                .collect(Collectors.joining(" + "));
+                cardStatusLabel.setText("Card Payment: " + historyText + " paid");
+                cardStatusLabel.setStyle("-fx-text-fill: #333333; -fx-font-weight: bold;");
+                }
+            else {
+                cardStatusLabel.setText("Card Payment : DECLINED (" + result.message() + ")");
+                cardStatusLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+            }
+        }
+        checkOverallStatus();
+    }
+
+    //Uppdaterar växelsumman
+
+    public void updateCashChange(CashPaymentResult result, BigDecimal amount) {
+        if (cashChangeLabel != null) {
+            if (result.success()){
+                cashPaymentHistory.add(amount);
+
+                String historyText = cashPaymentHistory.stream()
+                        .map(a -> "€" + a.toPlainString())
+                        .collect(Collectors.joining(" + "));
+
+                cashChangeLabel.setText("Cash Payment: " + historyText + " received. Change to return: €" + result.change().toPlainString());
+                cashChangeLabel.setStyle("-fx-text-fill: #333333; -fx-font-weight: bold;");
+            }
+            else {
+                cashChangeLabel.setText("Not enough money received" + result.message());
+                cashChangeLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+            }
+        }
+        checkOverallStatus();
+    }
+
+    //Nollställ
+
+    public void resetStatusLabels() {
+        cardPaymentHistory.clear();
+        cashPaymentHistory.clear();
+        if (cardStatusLabel != null) cardStatusLabel.setText("");
+        if (cashChangeLabel != null) cashChangeLabel.setText("");
+        if (overallStatusLabel != null) overallStatusLabel.setText("");
     }
 
 }

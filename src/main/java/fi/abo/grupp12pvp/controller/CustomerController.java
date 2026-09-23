@@ -60,6 +60,12 @@ public class CustomerController {
     @FXML private VBox paymentOptionsPane;
     @FXML private VBox approvedPane;
 
+    //Receipt
+
+    @FXML private VBox receiptChoice;
+    @FXML private VBox receiptShow;
+    @FXML private Label receiptTextLabel;
+
     private Sale sale;
 
     private PosController posController;
@@ -183,6 +189,12 @@ public class CustomerController {
             cardPaidLabel.setText("Paid by card: " + sale.getCardPaid().toPlainString() + "€");
             cardAmountField.clear();
 
+            //Uppdaterar kassan med resultat och beloppet som betalades
+
+            if (posController != null) {
+                posController.updateCardTransactionResult(result, amount);
+            }
+
             //kontrollerar att köpet är helt klart
             checkPaymentStatus();
         }
@@ -208,6 +220,11 @@ public class CustomerController {
         }
 
         CashPaymentResult result = cashPayment.processPayment(sale, amount);
+
+        if (posController != null) {
+            posController.updateCashChange(result, amount);
+        }
+
         cashPaymentStatusLabel.setText(result.message());
 
         if (result.success()) {
@@ -234,6 +251,37 @@ public class CustomerController {
         }
     }
 
+    @FXML
+    private void handleShowReceipt() {
+        if (sale == null) return;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("STORE RECEIPT\n");
+        for (Map.Entry<Product, Integer> entry : sale.getGroupedItems().entrySet()) {
+            sb.append(entry.getKey().name())
+                    .append(" x").append(entry.getValue())
+                    .append(" :€").append(entry.getKey().price().multiply(new BigDecimal(entry.getValue())))
+                    .append("\n");
+        }
+
+        sb.append("\n");
+        sb.append("Total: €").append(sale.getTotal().toPlainString()).append("\n");
+        sb.append("Paid with card: €").append(sale.getCardPaid().toPlainString()).append("\n");
+        sb.append("Paid with cash: €").append(sale.getCashPaid().toPlainString()).append("\n");
+
+        if (receiptTextLabel != null) receiptTextLabel.setText(sb.toString());
+        if (receiptChoice != null) {
+            receiptChoice.setVisible(false);
+            receiptChoice.setManaged(false);
+
+        }
+
+        if (receiptShow != null) {
+            receiptShow.setVisible(true);
+            receiptShow.setManaged(true);
+        }
+    }
+
 
     @FXML
     private void handleApprove() {
@@ -244,6 +292,24 @@ public class CustomerController {
         if (paymentOptionsPane != null) {
             paymentOptionsPane.setVisible(true);
             paymentOptionsPane.setManaged(true);
+        }
+
+        //Återställ kassa och historik
+
+        if (posController != null) {
+            posController.resetStatusLabels();
+        }
+
+        //Återställ kvitto för nästa kund
+
+        if (receiptChoice != null) {
+            receiptChoice.setVisible(true);
+            receiptChoice.setManaged(true);
+        }
+
+        if(receiptShow != null) {
+            receiptShow.setVisible(false);
+            receiptShow.setManaged(false);
         }
 
         //Rensar fält för nästa kund
