@@ -9,6 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
+import java.util.List;
+import java.util.ArrayList;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -17,11 +19,16 @@ public class PosController {
     private final Sale sale = new Sale();
     private CustomerController customerController;
 
+    private final List<Product> displayedProducts = new ArrayList<>();
+
     @FXML
     private TextField scanField;
 
     @FXML
     private Button scanButton;
+
+    @FXML
+    private Button removeButton;
 
     @FXML
     private ListView<String> itemListView;
@@ -47,6 +54,7 @@ public class PosController {
     @FXML
     private void initialize() {
         scanButton.setOnAction(e -> handleScan());
+        removeButton.setOnAction(e -> handleRemoveSelected());
         createProductCatalogue();
     }
 
@@ -59,7 +67,9 @@ public class PosController {
             return;
         }
 
+
         Product product = catalog.get(barcode);
+
 
         if (product == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -74,6 +84,39 @@ public class PosController {
 
         scanField.clear();
         scanField.requestFocus();
+    }
+
+    private void handleRemoveSelected() {
+        int selectedIndex = itemListView.getSelectionModel().getSelectedIndex();
+
+        if (selectedIndex < 0 || selectedIndex >= displayedProducts.size()) {
+            return;
+        }
+
+        Product selectedProduct = displayedProducts.get(selectedIndex);
+        sale.removeItem(selectedProduct);
+
+        refreshItemList();
+        totalLabel.setText("Total: €" + sale.getTotal().toPlainString());
+
+        if (customerController != null) {
+            customerController.refresh(sale);
+        }
+    }
+
+    private void refreshItemList() {
+        itemListView.getItems().clear();
+        displayedProducts.clear();
+
+        for (Map.Entry<Product, Integer> entry : sale.getGroupedItems().entrySet()) {
+            Product product = entry.getKey();
+            int quantity = entry.getValue();
+
+            itemListView.getItems().add(
+                    product.name() + " x" + quantity + " - €" + product.price() + " each"
+            );
+            displayedProducts.add(product);
+        }
     }
 
     public Sale getSale() {
@@ -94,16 +137,20 @@ public class PosController {
         }
     }
 
+    public void refreshFromExternalChange() {
+        refreshItemList();
+        totalLabel.setText("Total: €" + sale.getTotal().toPlainString());
+    }
+
     //Lägger till en produkt till produktkorgen både då en produkt "scannas" och då en produkt väljs från produktkatalogen
     private void addProductToSale(Product product) {
         sale.addItem(product);
 
-        itemListView.getItems().add(
-                product.name() + " - €" + product.price()
-        );
+        refreshItemList();
         totalLabel.setText("Total: €" + sale.getTotal().toPlainString());
         if (customerController != null) {
             customerController.refresh(sale);
         }
     }
+
 }

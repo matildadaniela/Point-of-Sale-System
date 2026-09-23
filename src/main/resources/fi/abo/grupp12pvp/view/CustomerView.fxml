@@ -15,6 +15,7 @@
     <!--Produkter och totalsumma syns alltid-->
     <Label text="Your Items" styleClass="title"/>
     <ListView fx:id="customerItemListView"/>
+    <Button fx:id="removeButton" text="Remove Selected Item"/>
     <Label fx:id="customerTotalLabel" styleClass="total-label" text="Total: €0.00"/>
 
     <!--Remaining sum to pay-->

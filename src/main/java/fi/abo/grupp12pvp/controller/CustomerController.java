@@ -14,6 +14,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerController {
 
@@ -60,12 +62,20 @@ public class CustomerController {
 
     private Sale sale;
 
+    private PosController posController;
+    private final List<Product> displayedProducts = new ArrayList<>();
+
     public void setSale(Sale sale) {
         this.sale = sale;
     }
 
+    public void setPosController(PosController posController) {
+        this.posController = posController;
+    }
+
     public void refresh(Sale sale) {
         customerItemListView.getItems().clear();
+        displayedProducts.clear();
 
         for (Map.Entry<Product, Integer> entry : sale.getGroupedItems().entrySet()) {
             Product product = entry.getKey();
@@ -73,6 +83,7 @@ public class CustomerController {
             customerItemListView.getItems().add(
                     product.name() + " x" + quantity
             );
+            displayedProducts.add(product);
         }
 
         customerTotalLabel.setText("Total: €" + sale.getTotal().toPlainString());
@@ -89,6 +100,26 @@ public class CustomerController {
             changeLabel.setText("Change: " + sale.getChange().toPlainString() + "€");
         }
     }
+
+    private void handleRemoveSelected() {
+        int selectedIndex = customerItemListView.getSelectionModel().getSelectedIndex();
+
+        if (selectedIndex < 0 || selectedIndex >= displayedProducts.size()) {
+            return;
+        }
+
+        Product selectedProduct = displayedProducts.get(selectedIndex);
+        sale.removeItem(selectedProduct);
+
+        refresh(sale);
+
+        if (posController != null) {
+            posController.refreshFromExternalChange();
+        }
+    }
+
+    @FXML
+    private Button removeButton;
 
     //Control that the whole sum has been paid
     private void checkPaymentStatus() {
@@ -197,7 +228,12 @@ public class CustomerController {
         if (cashPaymentButton != null) {
             cashPaymentButton.setOnAction(e -> handleCashPayment());
         }
+
+        if (removeButton != null) {
+            removeButton.setOnAction(e -> handleRemoveSelected());
+        }
     }
+
 
     @FXML
     private void handleApprove() {

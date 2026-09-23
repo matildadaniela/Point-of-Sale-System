@@ -78,4 +78,8 @@ public class Sale {
     public boolean isFullyPaid() {
         return getTotalPaid().compareTo(getTotal()) >= 0 && getTotal().compareTo(BigDecimal.ZERO) > 0 ;
     }
+
+    public boolean removeItem(Product product) {
+        return items.remove(product);
+    }
 }
