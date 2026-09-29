@@ -18,10 +18,11 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 public class PosController {
-    private final Sale sale = new Sale();
+    private Sale sale = new Sale();
     private CustomerController customerController;
 
     private final List<Product> displayedProducts = new ArrayList<>();
+    private final List<Sale> shelvedSales = new ArrayList<>();
 
     @FXML
     private TextField scanField;
@@ -31,6 +32,15 @@ public class PosController {
 
     @FXML
     private Button removeButton;
+
+    @FXML
+    private Button shelveButton;
+
+    @FXML
+    private Button resumeButton;
+
+    @FXML
+    private ListView<String> shelvedSalesListView;
 
     @FXML
     private ListView<String> itemListView;
@@ -67,6 +77,8 @@ public class PosController {
     private void initialize() {
         scanButton.setOnAction(e -> handleScan());
         removeButton.setOnAction(e -> handleRemoveSelected());
+        shelveButton.setOnAction(e -> handleShelveSale());
+        resumeButton.setOnAction(e -> handleResumeSale());
         createProductCatalogue();
     }
 
@@ -113,6 +125,60 @@ public class PosController {
 
         if (customerController != null) {
             customerController.refresh(sale);
+        }
+    }
+
+    private void handleShelveSale() {
+        if (sale.getItems().isEmpty()) {
+            return; // inget att hylla om kundvagnen är tom
+        }
+
+        shelvedSales.add(sale);
+        refreshShelvedList();
+
+        // Starta en ny, tom försäljning för nästa kund
+        sale = new Sale();
+        refreshItemList();
+        totalLabel.setText("Total: €" + sale.getTotal().toPlainString());
+
+        if (customerController != null) {
+            customerController.setSale(sale);
+            customerController.refresh(sale);
+        }
+    }
+
+    private void handleResumeSale() {
+        int selectedIndex = shelvedSalesListView.getSelectionModel().getSelectedIndex();
+
+        if (selectedIndex < 0 || selectedIndex >= shelvedSales.size()) {
+            return;
+        }
+
+        // Om det redan finns varor i den nuvarande försäljningen, hylla den innan bytet
+        if (!sale.getItems().isEmpty()) {
+            shelvedSales.add(sale);
+        }
+
+        sale = shelvedSales.remove(selectedIndex);
+        refreshShelvedList();
+
+        refreshItemList();
+        totalLabel.setText("Total: €" + sale.getTotal().toPlainString());
+
+        if (customerController != null) {
+            customerController.setSale(sale);
+            customerController.refresh(sale);
+        }
+    }
+
+    private void refreshShelvedList() {
+        shelvedSalesListView.getItems().clear();
+        for (int i = 0; i < shelvedSales.size(); i++) {
+            Sale shelved = shelvedSales.get(i);
+            shelvedSalesListView.getItems().add(
+                    "Shelved sale " + (i + 1) + " - " + shelved.getItems().size()
+                            + " items - €" + shelved.getTotal().toPlainString()
+            );
         }
     }
 

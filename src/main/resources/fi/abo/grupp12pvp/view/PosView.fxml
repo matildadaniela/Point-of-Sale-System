@@ -24,6 +24,10 @@
         <TextField fx:id="scanField" promptText="Scan barcode" maxWidth="350.0"/>
         <Button fx:id="scanButton" text="Scan item" defaultButton="true"/>
         <Button fx:id="removeButton" text="Remove Selected"/>
+        <Button fx:id="shelveButton" text="Shelve Sale"/>
+        <Label text="Shelved Sales" styleClass="items-label"/>
+        <ListView fx:id="shelvedSalesListView" prefHeight="100.0"/>
+        <Button fx:id="resumeButton" text="Resume Selected Sale"/>
         <Label text="Product Catalogue - Add items by clicking on the products" styleClass="items-label"/>
         <FlowPane fx:id="productCataloguePane" hgap="10" vgap="10"/>
         <Label text="Shopping cart" styleClass="items-label"/>
