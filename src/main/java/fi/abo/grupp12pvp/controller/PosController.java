@@ -216,6 +216,22 @@ public class PosController {
         }
     }
 
+    //Reset Sale och uppdatera kundvyn
+    public void resetSale() {
+        sale = new Sale();
+        refreshItemList();
+
+        if (totalLabel != null) {
+            totalLabel.setText("Total: €" + sale.getTotal().toPlainString());
+        }
+
+        if (customerController != null) {
+            customerController.setSale(sale);
+            customerController.refresh(sale);
+        }
+    }
+
+
     public void refreshFromExternalChange() {
         refreshItemList();
         totalLabel.setText("Total: €" + sale.getTotal().toPlainString());
