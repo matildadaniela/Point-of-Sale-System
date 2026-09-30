@@ -4,6 +4,7 @@ import fi.abo.grupp12pvp.model.CardPaymentResult;
 import fi.abo.grupp12pvp.model.CashPaymentResult;
 import fi.abo.grupp12pvp.model.Product;
 import fi.abo.grupp12pvp.model.Sale;
+import fi.abo.grupp12pvp.service.CashBoxService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -20,7 +21,7 @@ import java.util.Map;
 public class PosController {
     private final Sale sale = new Sale();
     private CustomerController customerController;
-
+    private final CashBoxService cashBoxService = new CashBoxService();
     private final List<Product> displayedProducts = new ArrayList<>();
 
     @FXML
@@ -230,6 +231,26 @@ public class PosController {
         if (cardStatusLabel != null) cardStatusLabel.setText("");
         if (cashChangeLabel != null) cashChangeLabel.setText("");
         if (overallStatusLabel != null) overallStatusLabel.setText("");
+    }
+
+    public void openCashBox () {
+        try {
+            if(!cashBoxService.isOpen()) {
+                cashBoxService.open();
+            }
+        } catch (Exception e) {
+            System.err.println("Could not open cashbox: " + e.getMessage());
+        }
+    }
+
+    public void closeCashBox() {
+        try {
+            if (cashBoxService.isOpen()) {
+                cashBoxService.close();
+            }
+        } catch (Exception e) {
+            System.err.println("Could not close CashBox" + e.getMessage());
+        }
     }
 
 }
