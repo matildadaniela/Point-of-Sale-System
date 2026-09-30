@@ -303,6 +303,7 @@ public class CustomerController {
 
         if (posController != null) {
             posController.resetStatusLabels();
+            posController.resetSale();
         }
 
         //Återställ kvitto för nästa kund
