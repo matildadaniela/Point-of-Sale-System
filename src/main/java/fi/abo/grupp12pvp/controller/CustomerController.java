@@ -228,6 +228,10 @@ public class CustomerController {
         cashPaymentStatusLabel.setText(result.message());
 
         if (result.success()) {
+
+            if (posController != null) {
+                posController.openCashBox();
+            }
             cashAmountField.clear();
             //Visa växelsumma
             if (changeLabel != null) {
