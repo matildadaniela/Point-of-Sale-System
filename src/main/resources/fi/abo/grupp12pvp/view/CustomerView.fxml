@@ -61,6 +61,7 @@
         <VBox fx:id="receiptShow" spacing="10" alignment="CENTER" visible="false" managed="false">
             <Label text="RECEIPT" style="-fx-font-family: monospace; -fx-font-weight: bold;"/>
             <Label fx:id="receiptTextLabel" style="-fx-font-family: monospace;" wrapText="true"/>
+            <Button text="Print receipt" onAction="#handlePrintReceipt"/>
             <Button text="Done" onAction="#handleApprove"/>
         </VBox>
     </VBox>

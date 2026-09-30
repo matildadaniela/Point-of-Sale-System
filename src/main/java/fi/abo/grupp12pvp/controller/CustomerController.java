@@ -6,13 +6,20 @@ import fi.abo.grupp12pvp.model.Product;
 import fi.abo.grupp12pvp.model.Sale;
 import fi.abo.grupp12pvp.payment.CardPayment;
 import fi.abo.grupp12pvp.payment.CashPayment;
+import fi.abo.grupp12pvp.service.ReceiptExporter;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
@@ -284,6 +291,44 @@ public class CustomerController {
         if (receiptShow != null) {
             receiptShow.setVisible(true);
             receiptShow.setManaged(true);
+        }
+    }
+
+    @FXML
+    private void handlePrintReceipt() {
+        if (sale == null || sale.getItems().isEmpty()) {
+            return;
+        }
+
+        Path downloadsDirectory = Path.of(
+                System.getProperty("user.home"),
+                "Downloads"
+        );
+
+        try {
+            Files.createDirectories(downloadsDirectory);
+
+            String fileName = "receipt-"
+                    + LocalDateTime.now()
+                    .format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"))
+                    + ".png";
+            Path receiptPath = downloadsDirectory.resolve(fileName);
+
+            ReceiptExporter.saveAsPng(sale, receiptPath);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Receipt printed");
+            alert.setHeaderText(null);
+            alert.setContentText("Receipt exported to:\n" + receiptPath);
+            alert.showAndWait();
+        } catch (IOException exception) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Receipt error");
+            alert.setHeaderText(null);
+            alert.setContentText(
+                    "Could not export the receipt:\n" + exception.getMessage()
+            );
+            alert.showAndWait();
         }
     }
 
