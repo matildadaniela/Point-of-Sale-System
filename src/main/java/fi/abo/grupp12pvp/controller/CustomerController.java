@@ -227,6 +227,7 @@ public class CustomerController {
 
         cashPaymentStatusLabel.setText(result.message());
 
+        //cashboxen öppnas om kontantbetalningen lyckades
         if (result.success()) {
 
             if (posController != null) {

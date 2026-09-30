@@ -36,5 +36,6 @@
         <Label fx:id="cardStatusLabel" text="" style="-fx-font-weight: bold; -fx-text-fill: #333333;"/>
         <Label fx:id="cashChangeLabel" text="" style="-fx-font-weight: bold; -fx-text-fill: #333333;"/>
         <Label fx:id="overallStatusLabel" text="" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: green;"/>
+        <Button text="Close cashbox" onAction="#closeCashBox"/>
     </children>
 </VBox>
