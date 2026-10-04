@@ -1,17 +1,170 @@
 .root {
-    -fx-font-family: "Gill Sans MT";
+    -fx-font-family: "DM Sans";
+    -fx-background-color: #dfe6e9;
+    -fx-text-fill: #2d3436;
+}
+
+.top-bar {
+    -fx-padding: 22 28 18 28;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b2bec3;
+    -fx-border-width: 0 0 1 0;
 }
 
 .title {
-    -fx-font-size: 24px;
+    -fx-font-family: "Inter";
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2d3436;
+}
+
+.subtitle {
+    -fx-font-family: "DM Sans";
+    -fx-font-size: 14px;
+    -fx-text-fill: #636e72;
+}
+
+.content-area {
+    -fx-padding: 22;
+}
+
+.card {
+    -fx-padding: 18;
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: #b2bec3;
+    -fx-border-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(31, 41, 55, 0.08), 12, 0.15, 0, 3);
+}
+
+.section-title {
+    -fx-font-family: "DM Sans";
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2d3436;
+}
+
+.muted-label {
+    -fx-font-family: "DM Sans";
+    -fx-text-fill: #636e72;
+    -fx-font-size: 12px;
+}
+
+.customer-section-title {
+    -fx-font-family: "DM Sans";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #636e72;
+}
+
+.approved-title {
+    -fx-font-family: "Inter";
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: green;
+}
+
+.receipt-title {
+    -fx-font-family: "DM Sans";
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
 }
 
-.items-label {
-    -fx-font-size: 14px;
+.receipt-text {
+    -fx-font-family: "DM Sans";
+    -fx-font-size: 12px;
 }
 
 .total-label {
-    -fx-font-size: 18px;
+    -fx-font-family: "DM Sans";
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
+    -fx-text-fill: #2d3436;
+}
+
+.total-row {
+    -fx-padding: 12 0 0 0;
+    -fx-border-color: #b2bec3;
+    -fx-border-width: 1 0 0 0;
+}
+
+.button {
+    -fx-font-family: "DM Sans";
+    -fx-background-color: #b2bec3;
+    -fx-background-radius: 7;
+    -fx-padding: 9 14;
+    -fx-text-fill: #2d3436;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #dfe6e9;
+}
+
+.primary-button {
+    -fx-background-color: #0984e3;
+    -fx-text-fill: white;
+}
+
+.primary-button:hover {
+    -fx-background-color: #74b9ff;
+}
+
+.product-button {
+    -fx-font-family: "DM Sans";
+    -fx-pref-width: 105px;
+    -fx-pref-height: 72px;
+    -fx-padding: 10 8 8 8;
+    -fx-font-size: 13px;
+    -fx-alignment: center;
+    -fx-background-color: #ffeaa7;
+    -fx-border-color: #fdcb6e;
+    -fx-border-radius: 7;
+    -fx-background-radius: 7;
+    -fx-text-fill: #2d3436;
+}
+
+.product-button:hover {
+    -fx-background-color: #fdcb6e;
+}
+
+.danger-button {
+    -fx-background-color: #fab1a0;
+    -fx-text-fill: #d63031;
+}
+
+.secondary-button {
+    -fx-background-color: #636e72;
+    -fx-text-fill: white;
+}
+
+.text-field {
+    -fx-font-family: "DM Sans";
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b2bec3;
+    -fx-border-radius: 7;
+    -fx-background-radius: 7;
+    -fx-padding: 9;
+}
+
+.list-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b2bec3;
+    -fx-border-radius: 7;
+    -fx-background-radius: 7;
+}
+
+.status-panel {
+    -fx-padding: 12;
+    -fx-background-color: #dfe6e9;
+    -fx-background-radius: 7;
+    -fx-border-color: #b2bec3;
+    -fx-border-radius: 7;
+}
+
+.status-label {
+    -fx-font-family: "DM Sans";
+    -fx-font-weight: bold;
+    -fx-text-fill: green;
 }

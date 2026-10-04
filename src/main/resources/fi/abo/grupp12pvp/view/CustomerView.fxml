@@ -11,12 +11,14 @@
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="fi.abo.grupp12pvp.controller.CustomerController"
       stylesheets="@styles.css"
-      spacing="10" style="-fx-padding: 20;">
+      spacing="10" prefWidth="400" prefHeight="700" style="-fx-padding: 20;">
 
     <!--Produkter och totalsumma syns alltid-->
     <Label text="Your Items" styleClass="title"/>
-    <ListView fx:id="customerItemListView"/>
-    <Button fx:id="removeButton" text="Remove Selected Item"/>
+    <ListView fx:id="customerItemListView" prefHeight="160" VBox.vgrow="NEVER"/>
+    <Button fx:id="removeButton"
+            text="Remove Selected Item"
+            onAction="#handleRemoveSelected"/>
     <Label fx:id="customerTotalLabel" styleClass="total-label" text="Total: €0.00"/>
 
     <!--Remaining sum to pay-->
@@ -26,18 +28,21 @@
     <VBox fx:id="paymentOptionsPane" spacing="10">
 
         <!--Card-->
-        <Label text="Card Payment"/>
+        <Label text="Card Payment" styleClass="customer-section-title"/>
         <TextField fx:id="cardAmountField"
                    promptText="Amount"/>
         <Button fx:id="cardPaymentButton"
-                text="Pay by card"/>
+                text="Pay by card"
+                onAction="#handleCardPayment"/>
         <Label fx:id="cardPaymentStatusLabel"/>
         <Label fx:id="cardPaidLabel" text="Paid by card: 0.00€"/>
 
         <!--Cash-->
-        <Label text="Cash Payment"/>
+        <Label text="Cash Payment" styleClass="customer-section-title"/>
         <TextField fx:id="cashAmountField" promptText="Amount"/>
-        <Button fx:id="cashPaymentButton" text="Pay by cash"/>
+        <Button fx:id="cashPaymentButton"
+                text="Pay by cash"
+                onAction="#handleCashPayment"/>
         <Label fx:id="cashPaymentStatusLabel"/>
         <Label fx:id="cashPaidLabel" text="Paid by cash: 0.00"/>
 
@@ -45,12 +50,12 @@
 
     <!-- Approved Panel & Change -->
     <VBox fx:id="approvedPane" spacing="15" alignment="CENTER" visible="false" managed="false">
-        <Label text="Purchase approved!" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: green;"/>
+        <Label text="Purchase approved!" styleClass="approved-title"/>
         <Label fx:id="changeLabel" text="Change: 0.00" style="-fx-font-weight: bold;"/>
 
         <!--Receipt choice-->
         <VBox fx:id="receiptChoice" spacing="10" alignment="CENTER">
-            <Label text="Would you like a receipt?" style="-fx-font-size: 14px;"/>
+            <Label text="Would you like a receipt?" styleClass="customer-section-title"/>
             <HBox spacing="10" alignment="CENTER">
                 <Button text="Yes" onAction="#handleShowReceipt"/>
                 <Button text="No" onAction="#handleApprove"/>
@@ -59,8 +64,8 @@
 
         <!--Show receipt -->
         <VBox fx:id="receiptShow" spacing="10" alignment="CENTER" visible="false" managed="false">
-            <Label text="RECEIPT" style="-fx-font-family: monospace; -fx-font-weight: bold;"/>
-            <Label fx:id="receiptTextLabel" style="-fx-font-family: monospace;" wrapText="true"/>
+            <Label text="RECEIPT" styleClass="receipt-title"/>
+            <Label fx:id="receiptTextLabel" styleClass="receipt-text" wrapText="true"/>
             <Button text="Print receipt" onAction="#handlePrintReceipt"/>
             <Button text="Done" onAction="#handleApprove"/>
         </VBox>

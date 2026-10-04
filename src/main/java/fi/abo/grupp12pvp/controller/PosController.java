@@ -210,7 +210,10 @@ public class PosController {
             Button button = new Button(
                     product.name() + "\n€" + product.price()
             );
-            button.setPrefSize(70, 40);
+            button.setWrapText(true);
+            button.setMinHeight(72);
+            button.setPrefHeight(72);
+            button.getStyleClass().add("product-button");
             button.setOnAction(e -> addProductToSale(product));
             productCataloguePane.getChildren().add(button);
         }
