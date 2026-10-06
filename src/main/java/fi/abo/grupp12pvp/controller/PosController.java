@@ -325,7 +325,7 @@ public class PosController {
         }
     }
 
-    //kassören kan stänga cashboxen då salen är klar
+
     @FXML
     public void closeCashBox() {
         try {

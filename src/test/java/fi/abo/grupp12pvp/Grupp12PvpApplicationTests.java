@@ -1,5 +1,7 @@
 package fi.abo.grupp12pvp;
 
+import fi.abo.grupp12pvp.model.CashPaymentResult;
+import fi.abo.grupp12pvp.payment.CashPayment;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import fi.abo.grupp12pvp.model.Product;
@@ -32,12 +34,35 @@ public class Grupp12PvpApplicationTests {
     }
 
     @Test
-    void validCardPaymentShouldBeApproved() {
-        CardPayment cardPayment = new CardPayment();
+    void payingForAllItemsWithCreditCard() {
 
-        CardPaymentResult result = cardPayment.pay(new BigDecimal(10.00));
+        Sale sale = new Sale();
 
-        assertTrue(result.approved());
+        sale.addItem(new Product("123456", "Bread", new BigDecimal("1.50")));
+
+        sale.addCardPayment(new BigDecimal("1.50"));
+
+        assertEquals(new BigDecimal("1.50"), sale.getCardPaid());
+
+        assertEquals(new BigDecimal("0.00"), sale.getRemainingTotal());
+
+        assertTrue(sale.isFullyPaid());
+    }
+
+    @Test
+    void payingForAllItemsWithCash() {
+
+        Sale sale = new Sale();
+
+        sale.addItem(new Product("123456", "Bread", new BigDecimal("1.50")));
+
+        sale.addCashPayment(new BigDecimal("1.50"));
+
+        assertEquals(new BigDecimal("1.50"), sale.getCashPaid());
+
+        assertEquals(new BigDecimal("0.00"), sale.getRemainingTotal());
+
+        assertTrue(sale.isFullyPaid());
     }
 
 }
