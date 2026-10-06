@@ -6,11 +6,12 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 
 <?import javafx.scene.layout.FlowPane?>
-<VBox spacing="10.0"
+<VBox spacing="15.0"
       prefWidth="500.0"
-      prefHeight="500.0"
+      prefHeight="850.0"
       xmlns="http://javafx.com/javafx/25"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="fi.abo.grupp12pvp.controller.PosController"
@@ -21,16 +22,32 @@
 
     <children>
         <Label text="Point of Sale System" styleClass="title"/>
-        <TextField fx:id="scanField" promptText="Scan barcode" maxWidth="350.0"/>
-        <Button fx:id="scanButton" text="Scan item" defaultButton="true"/>
-        <Button fx:id="removeButton" text="Remove Selected"/>
-        <Button fx:id="shelveButton" text="Shelve Sale"/>
-        <Label text="Shelved Sales" styleClass="items-label"/>
+
+        <Label text="SCAN ITEM" styleClass="items-label"><VBox.margin><Insets top="25" /></VBox.margin></Label>
+        <HBox spacing="10">
+            <children>
+                <TextField fx:id="scanField" promptText="Scan barcode" maxWidth="350.0" />
+                <Button fx:id="scanButton" text="Scan item" defaultButton="true"/>
+            </children>
+        </HBox>
+
+        <Label text="CURRENT SALE" styleClass="items-label"><VBox.margin><Insets top="25" /></VBox.margin></Label>
+        <HBox spacing="10">
+            <children>
+                <Button fx:id="removeButton" text="Remove Selected"/>
+                <Button fx:id="shelveButton" text="Shelve Sale"/>
+            </children>
+        </HBox>
+
+        <Label text="SHELVED SALES" styleClass="items-label" />
         <ListView fx:id="shelvedSalesListView" prefHeight="100.0"/>
         <Button fx:id="resumeButton" text="Resume Selected Sale"/>
-        <Label text="Product Catalogue - Add items by clicking on the products" styleClass="items-label"/>
+
+        <Label text="Product Catalogue - Add items by clicking on the products" styleClass="items-label"><VBox.margin><Insets top="25" /></VBox.margin></Label>
         <FlowPane fx:id="productCataloguePane" hgap="10" vgap="10"/>
-        <Label text="Shopping cart" styleClass="items-label"/>
+
+
+        <Label text="Shopping cart" styleClass="items-label"><VBox.margin><Insets top="25" /></VBox.margin></Label>
         <ListView fx:id="itemListView" prefHeight="250.0"/>
         <Label fx:id="totalLabel" text="Total: €0.00" styleClass="total-label"/>
         <Label fx:id="cardStatusLabel" text="" style="-fx-font-weight: bold; -fx-text-fill: #333333;"/>
