@@ -27,21 +27,21 @@
         <HBox spacing="10">
             <children>
                 <TextField fx:id="scanField" promptText="Scan barcode" maxWidth="350.0" />
-                <Button fx:id="scanButton" text="Scan item" defaultButton="true"/>
+                <Button fx:id="scanButton" text="Scan item" defaultButton="true" styleClass="primary-button"/>
             </children>
         </HBox>
 
         <Label text="CURRENT SALE" styleClass="items-label"><VBox.margin><Insets top="25" /></VBox.margin></Label>
         <HBox spacing="10">
             <children>
-                <Button fx:id="removeButton" text="Remove Selected"/>
-                <Button fx:id="shelveButton" text="Shelve Sale"/>
+                <Button fx:id="removeButton" text="Remove Selected" styleClass="secondary-button"/>
+                <Button fx:id="shelveButton" text="Shelve Sale" styleClass="secondary-button"/>
             </children>
         </HBox>
 
         <Label text="SHELVED SALES" styleClass="items-label" />
         <ListView fx:id="shelvedSalesListView" prefHeight="100.0"/>
-        <Button fx:id="resumeButton" text="Resume Selected Sale"/>
+        <Button fx:id="resumeButton" text="Resume Selected Sale" styleClass="secondary-button"/>
 
         <Label text="Product Catalogue - Add items by clicking on the products" styleClass="items-label"><VBox.margin><Insets top="25" /></VBox.margin></Label>
         <FlowPane fx:id="productCataloguePane" hgap="10" vgap="10"/>
@@ -53,6 +53,6 @@
         <Label fx:id="cardStatusLabel" text="" style="-fx-font-weight: bold; -fx-text-fill: #333333;"/>
         <Label fx:id="cashChangeLabel" text="" style="-fx-font-weight: bold; -fx-text-fill: #333333;"/>
         <Label fx:id="overallStatusLabel" text="" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: green;"/>
-        <Button text="Close cashbox" onAction="#closeCashBox"/>
+        <Button text="Close cashbox" onAction="#closeCashBox" styleClass="secondary-button"/>
     </children>
 </VBox>
