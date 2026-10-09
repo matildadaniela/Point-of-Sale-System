@@ -114,6 +114,7 @@ public class CustomerController {
         }
     }
 
+    @FXML
     private void handleRemoveSelected() {
         int selectedIndex = customerItemListView.getSelectionModel().getSelectedIndex();
 
@@ -152,6 +153,7 @@ public class CustomerController {
     }
 
     //Hanterar en kortbetalning
+    @FXML
     private void handleCardPayment() {
 
         if (sale == null) return;
@@ -208,6 +210,7 @@ public class CustomerController {
     }
 
     //Hanterar en kontantbetalning
+    @FXML
     private void handleCashPayment() {
         if (sale == null) return;
 
@@ -248,19 +251,6 @@ public class CustomerController {
         }
 
         checkPaymentStatus();
-    }
-
-    @FXML
-    private void initialize() {
-        cardPaymentButton.setOnAction(e -> handleCardPayment());
-
-        if (cashPaymentButton != null) {
-            cashPaymentButton.setOnAction(e -> handleCashPayment());
-        }
-
-        if (removeButton != null) {
-            removeButton.setOnAction(e -> handleRemoveSelected());
-        }
     }
 
     @FXML
@@ -366,10 +356,14 @@ public class CustomerController {
         //Rensar fält för nästa kund
         if (cardAmountField != null) cardAmountField.clear();
         if (cashAmountField != null) cashAmountField.clear();
-        if (cardPaymentButton != null) cardPaymentStatusLabel.setText("");
-        if (cashPaymentButton != null) cashPaymentStatusLabel.setText("");
+        if (cardPaymentStatusLabel != null) cardPaymentStatusLabel.setText("");
+        if (cashPaymentStatusLabel != null) cashPaymentStatusLabel.setText("");
+        if (cardPaidLabel != null) cardPaidLabel.setText("Paid by card: 0.00€");
+        if (cashPaidLabel != null) cashPaidLabel.setText("Paid by cash: 0.00€");
+        if (remainingLabel != null) remainingLabel.setText("Remaining sum to pay: €0.00");
 
         //Återställ växel till nästa kund
         if (changeLabel != null) changeLabel.setText("€0.00");
+        if (receiptTextLabel != null) receiptTextLabel.setText("");
     }
 }

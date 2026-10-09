@@ -1,58 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 
-<?import javafx.scene.layout.FlowPane?>
-<VBox spacing="15.0"
-      prefWidth="500.0"
-      prefHeight="850.0"
-      xmlns="http://javafx.com/javafx/25"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="fi.abo.grupp12pvp.controller.PosController"
-      stylesheets="@styles.css">
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
-
-    <children>
-        <Label text="Point of Sale System" styleClass="title"/>
-
-        <Label text="SCAN ITEM" styleClass="items-label"><VBox.margin><Insets top="25" /></VBox.margin></Label>
-        <HBox spacing="10">
-            <children>
-                <TextField fx:id="scanField" promptText="Scan barcode" maxWidth="350.0" />
-                <Button fx:id="scanButton" text="Scan item" defaultButton="true" styleClass="primary-button"/>
-            </children>
+<BorderPane prefWidth="1100.0"
+            prefHeight="700.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="fi.abo.grupp12pvp.controller.PosController"
+            stylesheets="@styles.css">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="top-bar">
+            <Label text="Cash Register" styleClass="title"/>
+            <Label text="Point of Sale" styleClass="subtitle"/>
         </HBox>
+    </top>
+    <center>
+        <HBox spacing="18" fillHeight="true" styleClass="content-area">
+            <VBox HBox.hgrow="ALWAYS" spacing="14" styleClass="card">
+                <Label text="Product Catalogue" styleClass="section-title"/>
+                <Label text="Select a product or scan a barcode" styleClass="muted-label"/>
+                <HBox spacing="8">
+                    <TextField fx:id="scanField" promptText="Scan barcode" HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="scanButton" text="Scan item" defaultButton="true" styleClass="primary-button"/>
+                </HBox>
+                <FlowPane fx:id="productCataloguePane" hgap="10" vgap="10" prefWrapLength="430"/>
+            </VBox>
 
-        <Label text="CURRENT SALE" styleClass="items-label"><VBox.margin><Insets top="25" /></VBox.margin></Label>
-        <HBox spacing="10">
-            <children>
-                <Button fx:id="removeButton" text="Remove Selected" styleClass="secondary-button"/>
-                <Button fx:id="shelveButton" text="Shelve Sale" styleClass="secondary-button"/>
-            </children>
+            <VBox HBox.hgrow="ALWAYS" spacing="14" styleClass="card">
+                <HBox alignment="CENTER_LEFT" spacing="16">
+                    <Label text="Current Sale" styleClass="section-title" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="removeButton" text="Remove Selected" styleClass="danger-button"/>
+                </HBox>
+                <ListView fx:id="itemListView" VBox.vgrow="ALWAYS"/>
+                <HBox alignment="CENTER_RIGHT" styleClass="total-row">
+                    <Label fx:id="totalLabel" text="Total: €0.00" styleClass="total-label"/>
+                </HBox>
+            </VBox>
+
+            <VBox prefWidth="230" spacing="14" styleClass="card">
+                <Label text="Sale Management" styleClass="section-title"/>
+                <Button fx:id="shelveButton" text="Shelve Sale" maxWidth="Infinity"/>
+                <Label text="Shelved Sales" styleClass="muted-label"/>
+                <ListView fx:id="shelvedSalesListView" prefHeight="150" VBox.vgrow="ALWAYS"/>
+                <Button fx:id="resumeButton" text="Resume Selected Sale" maxWidth="Infinity"/>
+                <VBox spacing="8" styleClass="status-panel">
+                    <Label text="Payment status" styleClass="muted-label"/>
+                    <Label fx:id="overallStatusLabel" text="No payment yet" styleClass="status-label"/>
+                    <Label fx:id="cardStatusLabel" text="" wrapText="true"/>
+                    <Label fx:id="cashChangeLabel" text="" wrapText="true"/>
+                </VBox>
+                <Button text="Close cashbox" onAction="#closeCashBox" maxWidth="Infinity" styleClass="secondary-button"/>
+            </VBox>
         </HBox>
-
-        <Label text="SHELVED SALES" styleClass="items-label" />
-        <ListView fx:id="shelvedSalesListView" prefHeight="100.0"/>
-        <Button fx:id="resumeButton" text="Resume Selected Sale" styleClass="secondary-button"/>
-
-        <Label text="Product Catalogue - Add items by clicking on the products" styleClass="items-label"><VBox.margin><Insets top="25" /></VBox.margin></Label>
-        <FlowPane fx:id="productCataloguePane" hgap="10" vgap="10"/>
-
-
-        <Label text="Shopping cart" styleClass="items-label"><VBox.margin><Insets top="25" /></VBox.margin></Label>
-        <ListView fx:id="itemListView" prefHeight="250.0"/>
-        <Label fx:id="totalLabel" text="Total: €0.00" styleClass="total-label"/>
-        <Label fx:id="cardStatusLabel" text="" style="-fx-font-weight: bold; -fx-text-fill: #333333;"/>
-        <Label fx:id="cashChangeLabel" text="" style="-fx-font-weight: bold; -fx-text-fill: #333333;"/>
-        <Label fx:id="overallStatusLabel" text="" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: green;"/>
-        <Button text="Close cashbox" onAction="#closeCashBox" styleClass="secondary-button"/>
-    </children>
-</VBox>
+    </center>
+</BorderPane>
