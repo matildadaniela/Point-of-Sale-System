@@ -44,7 +44,7 @@
                 text="Pay by cash"
                 onAction="#handleCashPayment"/>
         <Label fx:id="cashPaymentStatusLabel"/>
-        <Label fx:id="cashPaidLabel" text="Paid by cash: 0.00"/>
+        <Label fx:id="cashPaidLabel" text="Paid by cash: 0.00€"/>
 
     </VBox>
 
@@ -57,8 +57,8 @@
         <VBox fx:id="receiptChoice" spacing="10" alignment="CENTER">
             <Label text="Would you like a receipt?" styleClass="customer-section-title"/>
             <HBox spacing="10" alignment="CENTER">
-                <Button text="Yes" onAction="#handleShowReceipt"/>
-                <Button text="No" onAction="#handleApprove"/>
+                <Button text="Yes" onAction="#handleShowReceipt" styleClass="primary-button"/>
+                <Button text="No" onAction="#handleApprove" styleClass="secondary-button"/>
             </HBox>
         </VBox>
 
