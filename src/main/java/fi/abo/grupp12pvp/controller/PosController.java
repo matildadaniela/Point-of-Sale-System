@@ -5,6 +5,7 @@ import fi.abo.grupp12pvp.model.CashPaymentResult;
 import fi.abo.grupp12pvp.model.Product;
 import fi.abo.grupp12pvp.model.Sale;
 import fi.abo.grupp12pvp.service.CashBoxService;
+import fi.abo.grupp12pvp.service.ProductCatalogService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -17,11 +18,13 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Optional;
 
 public class PosController {
     private Sale sale = new Sale();
     private CustomerController customerController;
     private final CashBoxService cashBoxService = new CashBoxService();
+    private final ProductCatalogService productCatalogService = new ProductCatalogService();
     private final List<Product> displayedProducts = new ArrayList<>();
     private final List<Sale> shelvedSales = new ArrayList<>();
 
@@ -62,13 +65,7 @@ public class PosController {
     private Label overallStatusLabel;
 
 
-    private final Map<String, Product> catalog = Map.of(
-            "123456", new Product("123456", "Bread", new BigDecimal("1.50")),
-            "234567", new Product("234567", "Milk", new BigDecimal("2.00")),
-            "345678", new Product("345678", "Eggs", new BigDecimal("0.50")),
-            "456789", new Product("456789", "Cheese", new BigDecimal("3.00")),
-            "567890", new Product("567890", "Butter", new BigDecimal("3.20"))
-    );
+
 
     public void setCustomerController(CustomerController customerController) {
         this.customerController = customerController;
@@ -92,23 +89,31 @@ public class PosController {
             return;
         }
 
-
-        Product product = catalog.get(barcode);
-
-
-        if (product == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid item");
-            alert.setHeaderText(null);
-            alert.setContentText("Unknown barcode.");
-            alert.showAndWait();
+        Optional<Product> found;
+        try {
+            found = productCatalogService.findByBarcode(barcode);
+        } catch (Exception e) {
+            showError("Database error", "Could not reach the product database. Is DynamicDB running?");
             return;
         }
 
-        addProductToSale(product);
+        if (found.isEmpty()) {
+            showError("Invalid item", "Unknown barcode.");
+            return;
+        }
+
+        addProductToSale(found.get());
 
         scanField.clear();
         scanField.requestFocus();
+    }
+
+    private void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void handleRemoveSelected() {
@@ -205,7 +210,17 @@ public class PosController {
     //Gör produkterna synliga för kassören
     //Anropar addProductToSale då kassören klickar på en produkt i katalogen
     private void createProductCatalogue() {
-        for (Product product : catalog.values()) {
+        List<Product> products;
+        try {
+            products = productCatalogService.getAllProducts();
+        } catch (Exception e) {
+            System.err.println("Could not load products: " + e.getMessage());
+            productCataloguePane.getChildren().add(
+                    new Label("Could not load products (is DynamicDB running?)"));
+            return;
+        }
+
+        for (Product product : products) {
 
             Button button = new Button(
                     product.name() + "\n€" + product.price()
