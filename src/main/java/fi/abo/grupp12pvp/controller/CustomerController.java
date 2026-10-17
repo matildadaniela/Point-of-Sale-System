@@ -1,12 +1,12 @@
 package fi.abo.grupp12pvp.controller;
 
-import fi.abo.grupp12pvp.model.CardPaymentResult;
 import fi.abo.grupp12pvp.model.CashPaymentResult;
 import fi.abo.grupp12pvp.model.Product;
 import fi.abo.grupp12pvp.model.Sale;
-import fi.abo.grupp12pvp.payment.CardPayment;
 import fi.abo.grupp12pvp.payment.CashPayment;
+import fi.abo.grupp12pvp.service.CardReaderService;
 import fi.abo.grupp12pvp.service.ReceiptExporter;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -23,6 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class CustomerController {
 
@@ -44,8 +45,6 @@ public class CustomerController {
 
     @FXML
     private Label cardPaidLabel;
-
-    private final CardPayment cardPayment = new CardPayment();
 
     //Cash Payment
     @FXML
@@ -74,6 +73,8 @@ public class CustomerController {
     @FXML private Label receiptTextLabel;
 
     private Sale sale;
+
+    private final CardReaderService cardReaderService = new CardReaderService();
 
     private PosController posController;
     private final List<Product> displayedProducts = new ArrayList<>();
@@ -169,7 +170,7 @@ public class CustomerController {
 
         BigDecimal amount;
 
-        //Text blir big decimal belopp + felmeddelande visas om inputen inte är ett giltigt tal
+        // försök omvandla texten till ett belopp
         try {
             amount = new BigDecimal(input.trim());
         } catch (NumberFormatException e) {
@@ -177,37 +178,65 @@ public class CustomerController {
             return;
         }
 
-        //Kontrollera att kortbetalningen inte överskrider kvarvarande belopp
-        BigDecimal remaining = sale.getRemainingTotal();
-        if (amount.compareTo(remaining) > 0) {
-            cardPaymentStatusLabel.setText("You can't pay more than remaining total (€" + remaining.toPlainString() + ")");
+        // kontrollera att kunden inte betalar för mycket
+        if (amount.compareTo(sale.getRemainingTotal()) > 0) {
+            cardPaymentStatusLabel.setText("amount is too big");
             return;
         }
 
-        //Beloppet skickas till "kortbetalningstjänsten"
-        CardPaymentResult result = cardPayment.pay(amount);
+        //skickar beloppet till kortläsaren och startar betalningen
+        cardReaderService.waitForPayment(amount);
 
-        //Resultatet av betalningen syns för kunden
-        cardPaymentStatusLabel.setText(result.message());
+        // visa för kunden att systemet väntar på kortet
+        cardPaymentStatusLabel.setText("waiting for card");
+        //väntar på att kortläsaren ska slutföra betalningen
+        waitForCardReader(amount);
 
-        if (result.approved()) {
-            //Sparar betalningen om den gick igenom
-            sale.addCardPayment(amount);
 
-            //totala beloppet uppdateras
-            cardPaidLabel.setText("Paid by card: " + sale.getCardPaid().toPlainString() + "€");
-            cardAmountField.clear();
-
-            //Uppdaterar kassan med resultat och beloppet som betalades
-
-            if (posController != null) {
-                posController.updateCardTransactionResult(result, amount);
-            }
-
-            //kontrollerar att köpet är helt klart
-            checkPaymentStatus();
-        }
     }
+
+    private void waitForCardReader(BigDecimal amount) {
+        //ser till att javafx fönstret inte fryser
+        CompletableFuture.runAsync(() -> {
+            try {
+                // kontrollera kortläsarens status tills betalningen är färdig
+                while (!cardReaderService.status().trim().equalsIgnoreCase("DONE")) {
+                    Thread.sleep(500);
+                }
+
+                //Hämta resultatet från den färdiga kortbetalningen
+                String result = cardReaderService.result();
+
+                //kontrollera om betalningen blev godkänd
+                boolean accepted = result.contains("<paymentState>ACCEPTED</paymentState>");
+
+                // Nollar kortläsaren
+                cardReaderService.reset();
+
+                //uppdaterer javafx-gränssnitter på javafx tråden
+                Platform.runLater(() -> {
+                    if (accepted) {
+                        sale.addCardPayment(amount);
+
+                        cardPaymentStatusLabel.setText("Payment accepted");
+
+                        cardPaidLabel.setText("Paid by card " + sale.getCardPaid().toPlainString() + "€");
+
+                        cardAmountField.clear();
+
+                        checkPaymentStatus();
+
+                    } else {
+                        cardPaymentStatusLabel.setText("Payment not accepted");
+                    }
+                });
+            } catch (Exception e) {
+                Platform.runLater(() -> cardPaymentStatusLabel.setText("Card reader error"));
+            }
+        });
+    }
+
+
 
     //Hanterar en kontantbetalning
     @FXML

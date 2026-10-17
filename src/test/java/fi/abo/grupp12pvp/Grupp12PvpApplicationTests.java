@@ -1,18 +1,16 @@
 package fi.abo.grupp12pvp;
 
-import fi.abo.grupp12pvp.model.CashPaymentResult;
-import fi.abo.grupp12pvp.payment.CashPayment;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import fi.abo.grupp12pvp.model.Product;
 import fi.abo.grupp12pvp.model.Sale;
-import fi.abo.grupp12pvp.model.CardPaymentResult;
-import fi.abo.grupp12pvp.payment.CardPayment;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 
 
 @SpringBootTest
@@ -50,6 +48,24 @@ public class Grupp12PvpApplicationTests {
     }
 
     @Test
+    void payingForSomeItemsWithCreditCard() {
+
+        Sale sale = new Sale();
+
+        sale.addItem(new Product("123456", "Bread", new BigDecimal("1.50")));
+
+        sale.addCardPayment(new BigDecimal("0.50"));
+
+        assertEquals(new BigDecimal("0.50"), sale.getCardPaid());
+
+        assertEquals(new BigDecimal("1.00"), sale.getRemainingTotal());
+
+        assertFalse(sale.isFullyPaid());
+
+    }
+
+
+    @Test
     void payingForAllItemsWithCash() {
 
         Sale sale = new Sale();
@@ -65,4 +81,22 @@ public class Grupp12PvpApplicationTests {
         assertTrue(sale.isFullyPaid());
     }
 
+    @Test
+    void payingForSomeItemsWithCash() {
+
+        Sale sale = new Sale();
+
+        sale.addItem(new Product("123456", "Bread", new BigDecimal("1.50")));
+
+        sale.addCashPayment(new BigDecimal("0.50"));
+
+        assertEquals(new BigDecimal("0.50"), sale.getCashPaid());
+
+        assertEquals(new BigDecimal("1.00"), sale.getRemainingTotal());
+
+        assertFalse(sale.isFullyPaid());
+
+    }
+
 }
+
